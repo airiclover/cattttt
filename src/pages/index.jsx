@@ -1,26 +1,35 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { SendPost } from "src/components/SendPost";
 import { MainLayout } from "src/layouts/MainLayout";
+import { db } from "src/lib/firebase";
+import firebase from "src/lib/firebase";
+import Panels from "src/components/Panels";
 
 export default function Home() {
+  const [panels, setPanels] = useState([{ id: "", title: "" }]);
   const [text, setText] = useState("");
-  const [panel, setPanel] = useState("");
+
+  useEffect(() => {
+    const unSub = db.collection("panels").onSnapshot((snapshot) => {
+      setPanels(
+        snapshot.docs.map((doc) => ({ id: doc.id, title: doc.data().title }))
+      );
+    });
+    return () => unSub();
+  }, []);
+
+  const addPanel = () => {
+    db.collection("panels").add({ title: text });
+    setText("");
+  };
 
   return (
     <MainLayout>
       <h1 className="text-white text-6xl font-extrabold">Hello world!</h1>
 
-      <div className="my-4 p-4 bg-white bg-opacity-60 rounded-lg">
-        {/* <div className="bg-white bg-opacity-50"> */}
-        <h1>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Magnam eaque
-          necessitatibus molestias ipsam, possimus maiores. Incidunt culpa,
-          similique quo placeat perspiciatis molestiae autem asperiores
-          voluptatem rem, ipsum, quisquam tempore fuga.
-        </h1>
-      </div>
+      <Panels panels={panels} />
 
-      <SendPost text={text} setText={setText} />
+      <SendPost text={text} setText={setText} addPanel={addPanel} />
     </MainLayout>
   );
 }

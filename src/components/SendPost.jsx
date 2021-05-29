@@ -1,14 +1,18 @@
 export function SendPost(props) {
-  const { text, setText } = props;
+  const { text, setText, addPanel } = props;
 
   return (
-    <div className="absolute bottom-0 left-0 right-0 mx-auto pb-2 w-3/4 max-w-xl flex">
+    <div className="fixed bottom-0 left-0 right-0 mx-auto pb-2 w-3/4 max-w-xl flex">
       <textarea
         value={text}
         onChange={(e) => setText(e.target.value)}
         className="w-full h-20 rounded-l-lg"
       />
-      <button className="bg-gray-200 px-4 rounded-r-lg">
+      <button
+        disabled={!text}
+        onClick={addPanel}
+        className="bg-gray-200 px-4 rounded-r-lg"
+      >
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-5 w-5"
