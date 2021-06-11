@@ -1,4 +1,4 @@
-export function MainLayout({ children }) {
+export const MainLayout = ({ children }) => {
   return (
     <>
       <main
@@ -10,4 +10,4 @@ export function MainLayout({ children }) {
       </main>
     </>
   );
-}
+};

@@ -1,4 +1,4 @@
-export function SendPost(props) {
+export const SendPost = (props) => {
   const { text, setText, addPanel } = props;
 
   return (
@@ -24,4 +24,4 @@ export function SendPost(props) {
       </button>
     </div>
   );
-}
+};

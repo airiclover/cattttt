@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { SendPost } from "src/components/SendPost";
 import { MainLayout } from "src/layouts/MainLayout";
 import { db } from "src/lib/firebase";
 import firebase from "src/lib/firebase";
-import Panels from "src/components/Panels";
+import { PanelList } from "src/components/PanelList";
 
-export default function Home() {
+const Home = () => {
   const [panels, setPanels] = useState([{ id: "", title: "" }]);
   const [text, setText] = useState("");
 
@@ -25,11 +25,17 @@ export default function Home() {
 
   return (
     <MainLayout>
-      <h1 className="text-white text-6xl font-extrabold">Hello world!</h1>
+      <h1 className="pb-6 text-white text-6xl font-extrabold">Todo List😼</h1>
 
-      <Panels panels={panels} />
+      <div className="pb-20">
+        {panels.map((panel) => {
+          return <PanelList key={panel.id} id={panel.id} title={panel.title} />;
+        })}
+      </div>
 
       <SendPost text={text} setText={setText} addPanel={addPanel} />
     </MainLayout>
   );
-}
+};
+
+export default Home;
