@@ -2,7 +2,7 @@ export const SendPost = (props) => {
   const { text, setText, addPanel } = props;
 
   return (
-    <div className="fixed bottom-0 left-0 right-0 mx-auto pb-2 w-3/4 max-w-xl flex">
+    <div className="max-w-screen-sm mx-auto fixed bottom-0 left-0 right-0 pb-2 flex">
       <textarea
         value={text}
         onChange={(e) => setText(e.target.value)}

@@ -10,6 +10,7 @@ const Home = () => {
   const [text, setText] = useState("");
 
   useEffect(() => {
+    // 👇【todo】Authのuidとfirestoreのドキュメントidを紐付けたtodosフィールドの配列を参照する仕組みに変える。
     const unSub = db.collection("panels").onSnapshot((snapshot) => {
       setPanels(
         snapshot.docs.map((doc) => ({ id: doc.id, title: doc.data().title }))
@@ -25,15 +26,21 @@ const Home = () => {
 
   return (
     <MainLayout>
-      <h1 className="pb-6 text-white text-6xl font-extrabold">Todo List😼</h1>
+      <div className="max-w-screen-sm mx-auto">
+        <h1 className="pb-6 text-white text-6xl font-extrabold text-center">
+          Todo List 😼
+        </h1>
 
-      <div className="pb-20">
-        {panels.map((panel) => {
-          return <PanelList key={panel.id} id={panel.id} title={panel.title} />;
-        })}
+        <div className="pb-20">
+          {panels.map((panel) => {
+            return (
+              <PanelList key={panel.id} id={panel.id} title={panel.title} />
+            );
+          })}
+        </div>
+
+        <SendPost text={text} setText={setText} addPanel={addPanel} />
       </div>
-
-      <SendPost text={text} setText={setText} addPanel={addPanel} />
     </MainLayout>
   );
 };
