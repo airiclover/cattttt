@@ -3,7 +3,7 @@ import { db } from "src/lib/firebase";
 
 // React.memoで「コンポーネント」をメモ化し。再レンダーを抑える
 export const PanelList = memo((props) => {
-  const { id, title } = props;
+  const { id, todo } = props;
 
   const deletePanel = () => {
     db.collection("panels").doc(id).delete();
@@ -12,7 +12,7 @@ export const PanelList = memo((props) => {
   return (
     <div>
       <div className="my-4 p-4 bg-white bg-opacity-60 rounded-lg flex flex-col">
-        <p>{title}</p>
+        <p>{todo}</p>
 
         <button className="self-end" onClick={deletePanel}>
           <svg
