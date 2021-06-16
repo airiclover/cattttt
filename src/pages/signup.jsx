@@ -4,6 +4,7 @@ import { MainLayout } from "src/layouts/MainLayout";
 const SignUp = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
 
   return (
     <MainLayout>
