@@ -3,22 +3,24 @@ import { SendPost } from "src/components/SendPost";
 import { MainLayout } from "src/layouts/MainLayout";
 import { PanelList } from "src/components/PanelList";
 import { db } from "src/lib/firebase";
-import { auth } from "src/lib/firebase";
+import { kata } from "src/lib/firebase";
 import firebase from "src/lib/firebase";
+import { auth } from "src/lib/firebase";
 import { useRouter } from "next/router";
+import { useCheckLogin } from "src/pages/login";
 
 // ===========================
 //todo
-// 🔸todo送信・削除できるようコード修正する
+// 🔸リアルタイムにするかするか決める
 // 🔸ログインしたままページを再読み込みするとエラーになるため直す
-// 🔸新規会員画面作成
 // 🔸新規会員作成したらAuthのuidをfirestoreのIDで登録、
-
+// 🔸DR
+// 🔸Twitter認証
 // ===========================
 
 const Home = (props) => {
   const [getUser, setGetUser] = useState(null);
-  const [todos, setTodos] = useState([{ id: "", todo: "" }]);
+  const [todos, setTodos] = useState([{ todo: "" }]);
   const [text, setText] = useState("");
   const [name, setName] = useState("");
   const router = useRouter();
@@ -29,12 +31,13 @@ const Home = (props) => {
     auth.onAuthStateChanged((user) => {
       // User is signed in.
       // 👇【todo】Authのuidでユーザーごとのリンクへ飛ばすよう変える
-      user ? setGetUser(user.uid) : router.push("/login");
+      // user ? setGetUser(user?.uid) : router.push("/login");
+      user ? setGetUser(userInfo?.uid) : router.push("/login");
     });
   }, []);
 
   useEffect(() => {
-    const uid = db.collection("users").doc(userInfo.uid);
+    const uid = db.collection("users").doc(userInfo?.uid);
 
     uid.get().then((doc) => {
       if (doc.exists) {
@@ -65,8 +68,12 @@ const Home = (props) => {
   };
 
   const addTodos = () => {
-    // db.collection("todos").add({ todos: text });
-    // setText("");
+    const arrayTodos = db.collection("users").doc(userInfo?.uid);
+
+    arrayTodos.update({
+      todos: kata.FieldValue.arrayUnion(text),
+    });
+    setText("");
   };
 
   return (
@@ -81,8 +88,10 @@ const Home = (props) => {
         </h1>
 
         <div className="pb-20">
-          {todos.map((todo) => {
-            return <PanelList key={todo.id} todo={todo.todo} />;
+          {todos.map((todo, index) => {
+            return (
+              <PanelList key={index} todo={todo.todo} uid={userInfo?.uid} />
+            );
           })}
         </div>
 

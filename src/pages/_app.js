@@ -5,12 +5,11 @@ const MyApp = ({ Component, pageProps }) => {
   // const { email, setEmail, password, setPassword, uid, getUserInfo } =
   //   useGetUserInfo();
   // 👆👇はイコール (一つのオブジェクトにまとめてるだけ。)
-  const userInfo = useGetUserInfo();
-  useCheckLogin();
+  const globalGetUser = useGetUserInfo();
 
   return (
     <>
-      <Component {...pageProps} {...userInfo} />
+      <Component {...pageProps} {...globalGetUser} />
     </>
   );
 };

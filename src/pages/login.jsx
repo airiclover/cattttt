@@ -5,15 +5,9 @@ import { auth } from "src/lib/firebase";
 
 // _appで状態を持たせるためexport
 export const useGetUserInfo = () => {
-  //🔶ユーザー(1)🔶
+  //🔶ユーザー🔶
   const [email, setEmail] = useState("airi@test.com");
   const [password, setPassword] = useState("airi000");
-  //🔶ユーザー(2)🔶
-  // const [email, setEmail] = useState("login@test.com");
-  // const [password, setPassword] = useState("test123");
-  //🔶ユーザー(3)🔶
-  // const [email, setEmail] = useState("tameshi@tamehi.com");
-  // const [password, setPassword] = useState("123456");
 
   const [userInfo, setUserInfo] = useState(null);
   const router = useRouter();
@@ -25,7 +19,6 @@ export const useGetUserInfo = () => {
         .signInWithEmailAndPassword(email, password)
         .then((userCredential) => {
           const user = userCredential.user;
-          // setUserInfo(user);
           setUserInfo(user);
         });
 
