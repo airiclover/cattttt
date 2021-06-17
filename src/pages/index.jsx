@@ -11,16 +11,14 @@ import { useCheckLogin } from "src/pages/login";
 
 // ===========================
 //todo
-// 🔸リアルタイムにするかするか決める
 // 🔸ログインしたままページを再読み込みするとエラーになるため直す
 // 🔸新規会員作成したらAuthのuidをfirestoreのIDで登録、
-// 🔸DR
 // 🔸Twitter認証
 // ===========================
 
 const Home = (props) => {
   const [getUser, setGetUser] = useState(null);
-  const [todos, setTodos] = useState([{ todo: "" }]);
+  const [todos, setTodos] = useState([{ id: "", todo: "" }]);
   const [text, setText] = useState("");
   const [name, setName] = useState("");
   const router = useRouter();
@@ -30,8 +28,6 @@ const Home = (props) => {
   useEffect(() => {
     auth.onAuthStateChanged((user) => {
       // User is signed in.
-      // 👇【todo】Authのuidでユーザーごとのリンクへ飛ばすよう変える
-      // user ? setGetUser(user?.uid) : router.push("/login");
       user ? setGetUser(userInfo?.uid) : router.push("/login");
     });
   }, []);
@@ -39,17 +35,16 @@ const Home = (props) => {
   useEffect(() => {
     const uid = db.collection("users").doc(userInfo?.uid);
 
-    uid.get().then((doc) => {
-      if (doc.exists) {
-        console.log("ok document!");
-        setName(doc.data().name);
-        const getTodos = doc.data().todos;
-        setTodos(
-          getTodos.map((getTodo, index) => ({ id: index, todo: getTodo }))
-        );
-      } else {
-        console.log("No such document!");
-      }
+    uid.onSnapshot((doc) => {
+      console.log("ok document!");
+
+      setName(doc.data().name);
+
+      const getTodos = doc.data().todos;
+      setTodos(
+        getTodos.map((getTodo, index) => ({ id: index, todo: getTodo }))
+      );
+      console.log(doc.data().todos);
     });
   }, []);
 
@@ -79,7 +74,12 @@ const Home = (props) => {
   return (
     <MainLayout>
       <div className="max-w-xl mx-auto">
-        <button onClick={logoutPage}>ログアウト</button>
+        <button
+          className="h-11 w-28 bg-gray-500 text-white rounded-full"
+          onClick={logoutPage}
+        >
+          ログアウト
+        </button>
 
         <h1 className="pb-6 text-white text-6xl font-extrabold text-center">
           {`${name}'s`}

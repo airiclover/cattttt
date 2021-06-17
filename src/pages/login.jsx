@@ -22,8 +22,6 @@ export const useGetUserInfo = () => {
           setUserInfo(user);
         });
 
-      // 👇【todo】Authのuidでユーザーごとのリンクへ飛ばすよう変える
-      // 👇【todo】DRでユーザーごとのページ作成する
       router.push("/");
     } catch (error) {
       alert(
