@@ -1,6 +1,6 @@
 import { memo } from "react";
 import { db } from "src/lib/firebase";
-import { kata } from "src/lib/firebase";
+import firebase from "src/lib/firebase";
 
 // React.memoで「コンポーネント」をメモ化し。再レンダーを抑える
 export const PanelList = memo((props) => {
@@ -10,7 +10,7 @@ export const PanelList = memo((props) => {
     const arrayTodos = db.collection("users").doc(uid);
 
     arrayTodos.update({
-      todos: kata.FieldValue.arrayRemove(todo),
+      todos: firebase.firestore.FieldValue.arrayRemove(todo),
     });
   };
 

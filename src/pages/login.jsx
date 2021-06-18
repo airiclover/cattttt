@@ -45,9 +45,9 @@ export const Login = (props) => {
         </h1>
 
         <div className="w-64 pt-14 pb-10">
-          <div className="mb-4 p-4 bg-gray-200 text-xs">
+          <div className="mb-4 p-4 bg-gray-100 text-xs">
             <p>テストログイン</p>
-            <p>【📧】login@test.com</p>
+            <p>【📩】login@test.com</p>
             <p>【🗝】test123</p>
           </div>
           <div className="pb-6 flex flex-col">
@@ -81,14 +81,12 @@ export const Login = (props) => {
           </button>
         </div>
 
-        <p className="text-sm pb-10">もしくは</p>
-
-        <button className="h-11 w-64 bg-blue-500 text-white rounded-full">
-          Twitterからログイン
-        </button>
+        <p className="text-sm pb-6">もしくは</p>
 
         <Link href="/signup">
-          <a className="mt-8 border-b border-black">新規登録画面へ &gt;</a>
+          <a className="text-blue-500 border-b border-blue-500">
+            新規登録画面へ &gt;
+          </a>
         </Link>
       </div>
     </MainLayout>

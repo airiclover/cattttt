@@ -5,8 +5,7 @@ import { auth } from "src/lib/firebase";
 
 const SignUp = (props) => {
   // 👇loginでuser情報を_appでグローバルに状態を持たせてるもの
-  const { email, setEmail, password, setPassword, userInfo, getUserInfo } =
-    props;
+  const { email, setEmail, password, setPassword, getUserInfo } = props;
 
   const createUser = async () => {
     try {
@@ -27,7 +26,7 @@ const SignUp = (props) => {
       getUserInfo();
     } catch (error) {
       console.log("error");
-      alert(`${error.massage}：登録できません。`);
+      alert("登録できません。(既に登録されている可能性があります。)");
     }
   };
 
@@ -71,14 +70,12 @@ const SignUp = (props) => {
           </button>
         </div>
 
-        <p className="text-sm pb-10">もしくは</p>
-
-        <button className="h-11 w-64 bg-blue-500 text-white rounded-full">
-          Twitterから新規登録
-        </button>
+        <p className="text-sm pb-6">もしくは</p>
 
         <Link href="/login">
-          <a className="mt-8 border-b border-black">ログイン画面へ &gt;</a>
+          <a className="text-blue-500 border-b border-blue-500">
+            ログイン画面へ &gt;
+          </a>
         </Link>
       </div>
     </MainLayout>
