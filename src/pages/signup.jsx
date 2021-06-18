@@ -1,10 +1,40 @@
-import { useState } from "react";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 import { MainLayout } from "src/layouts/MainLayout";
+import { db } from "src/lib/firebase";
+import { auth } from "src/lib/firebase";
 
-const SignUp = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
+const SignUp = (props) => {
+  // const [signupEmail, setSignupEmail] = useState("111@create.com");
+  // const [signupPassword, setSignupPassword] = useState("ccc111");
+  const router = useRouter();
+  // 👇loginでuser情報を_appでグローバルに状態を持たせてるもの
+  const { email, setEmail, password, setPassword, userInfo, getUserInfo } =
+    props;
+
+  const createUser = async () => {
+    try {
+      await auth
+        // メールアドレスとパスワードを使用してユーザーの新規登録
+        .createUserWithEmailAndPassword(email, password)
+        .then((userCredential) => {
+          const user = userCredential.user;
+          console.log(user);
+
+          // uidをもとにデータベースを作成;
+          db.collection("users").doc(user.uid).set({
+            name: "名前未設定", //デフォルトは未設定にしとく
+            todos: [],
+          });
+          console.log("データ登録完了！");
+        });
+      getUserInfo();
+    } catch (error) {
+      console.log("error");
+      alert(`${error.massage}：登録できません。`);
+    }
+  };
 
   return (
     <MainLayout>
@@ -26,7 +56,7 @@ const SignUp = () => {
             />
           </div>
 
-          <div className="pb-6 flex flex-col">
+          <div className="pb-10 flex flex-col">
             <label>password</label>
             <input
               name="password"
@@ -38,19 +68,8 @@ const SignUp = () => {
             />
           </div>
 
-          <div className="pb-8 flex flex-col">
-            <label>name</label>
-            <input
-              value={name}
-              onChange={(e) => {
-                setName(e.target.value);
-              }}
-              className="h-10 p-2 border text-sm rounded-lg"
-            />
-          </div>
-
           <button
-            // onClick={getUserInfo}
+            onClick={createUser}
             className="h-11 w-full bg-gray-500 text-white rounded-full"
           >
             新規登録
@@ -62,6 +81,10 @@ const SignUp = () => {
         <button className="h-11 w-64 bg-blue-500 text-white rounded-full">
           Twitterから新規登録
         </button>
+
+        <Link href="/login">
+          <a className="pt-8 border-b border-black">ログイン画面へ &gt;</a>
+        </Link>
       </div>
     </MainLayout>
   );

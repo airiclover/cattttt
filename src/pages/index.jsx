@@ -12,7 +12,6 @@ import { useCheckLogin } from "src/pages/login";
 // ===========================
 //todo
 // 🔸ログインしたままページを再読み込みするとエラーになるため直す
-// 🔸新規会員作成したらAuthのuidをfirestoreのIDで登録、
 // 🔸Twitter認証
 // ===========================
 
@@ -26,13 +25,7 @@ const Home = (props) => {
   const { userInfo } = props;
 
   useEffect(() => {
-    auth.onAuthStateChanged((user) => {
-      // User is signed in.
-      user ? setGetUser(userInfo?.uid) : router.push("/login");
-    });
-  }, []);
-
-  useEffect(() => {
+    console.log(userInfo);
     const uid = db.collection("users").doc(userInfo?.uid);
 
     uid.onSnapshot((doc) => {

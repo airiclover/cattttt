@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import { MainLayout } from "src/layouts/MainLayout";
@@ -6,8 +7,8 @@ import { auth } from "src/lib/firebase";
 // _appで状態を持たせるためexport
 export const useGetUserInfo = () => {
   //🔶ユーザー🔶
-  const [email, setEmail] = useState("airi@test.com");
-  const [password, setPassword] = useState("airi000");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
 
   const [userInfo, setUserInfo] = useState(null);
   const router = useRouter();
@@ -21,7 +22,6 @@ export const useGetUserInfo = () => {
           const user = userCredential.user;
           setUserInfo(user);
         });
-
       router.push("/");
     } catch (error) {
       alert(
@@ -46,6 +46,7 @@ export const useCheckLogin = () => {
 export const Login = (props) => {
   const { email, setEmail, password, setPassword, userInfo, getUserInfo } =
     props;
+  console.log(password);
 
   return (
     <MainLayout>
@@ -54,11 +55,11 @@ export const Login = (props) => {
           Login 🐾
         </h1>
 
-        <div className="w-64 pt-16 pb-10">
-          <div className="text-xs">
-            <p>ユーザー1：airi@test.com、airi000</p>
-            <p>ユーザー2：login@test.com、test123</p>
-            <p>ユーザー3：tameshi@tamehi.com、123456</p>
+        <div className="w-64 pt-14 pb-10">
+          <div className="mb-4 p-4 bg-gray-200 text-xs">
+            <p>テストログイン</p>
+            <p>【📧】login@test.com</p>
+            <p>【🗝】test123</p>
           </div>
           <div className="pb-6 flex flex-col">
             <label>email</label>
@@ -96,6 +97,10 @@ export const Login = (props) => {
         <button className="h-11 w-64 bg-blue-500 text-white rounded-full">
           Twitterからログイン
         </button>
+
+        <Link href="/signup">
+          <a className="pt-8 border-b border-black">新規登録画面へ &gt;</a>
+        </Link>
       </div>
     </MainLayout>
   );
