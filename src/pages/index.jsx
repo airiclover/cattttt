@@ -1,22 +1,34 @@
-import { useState, useEffect, useCallback, useContext } from "react";
+import { useState, useEffect, useClalback, useCallback } from "react";
 import { SendPost } from "src/components/SendPost";
 import { MainLayout } from "src/layouts/MainLayout";
 import { PanelList } from "src/components/PanelList";
 import { db } from "src/lib/firebase";
 import { kata } from "src/lib/firebase";
-import firebase from "src/lib/firebase";
 import { auth } from "src/lib/firebase";
 import { useRouter } from "next/router";
-import { useCheckLogin } from "src/pages/login";
 
 // ===========================
 //todo
 // 🔸ログインしたままページを再読み込みするとエラーになるため直す
+// 　👆cookieとかに情報保持させる必要ありそう〜
 // 🔸Twitter認証
 // ===========================
 
+// ユーザーがログアウトするとログインページへ飛ばす
+const logoutPage = () => {
+  auth
+    .signOut()
+    .then(() => {
+      // Sign-out successful.
+      router.push("/login");
+    })
+    .catch((error) => {
+      // An error happened.
+      console.log(error);
+    });
+};
+
 const Home = (props) => {
-  const [getUser, setGetUser] = useState(null);
   const [todos, setTodos] = useState([{ id: "", todo: "" }]);
   const [text, setText] = useState("");
   const [name, setName] = useState("");
@@ -31,38 +43,33 @@ const Home = (props) => {
     uid.onSnapshot((doc) => {
       console.log("ok document!");
 
-      setName(doc.data().name);
+      setName(doc.data()?.name);
 
-      const getTodos = doc.data().todos;
+      const getTodos = doc.data()?.todos;
       setTodos(
         getTodos.map((getTodo, index) => ({ id: index, todo: getTodo }))
       );
-      console.log(doc.data().todos);
     });
   }, []);
 
-  // ユーザーがログアウトするとログインページへ飛ばす
-  const logoutPage = () => {
-    auth
-      .signOut()
-      .then(() => {
-        // Sign-out successful.
-        router.push("/login");
-      })
-      .catch((error) => {
-        // An error happened.
-        console.log(error);
-      });
-  };
+  // ユーザー情報がなかったら自動的にログイン画面へ
+  useEffect(() => {
+    const userCheck = auth.onAuthStateChanged((user) => {
+      !user && router.push("/login");
+    });
+    return () => userCheck();
+  });
 
-  const addTodos = () => {
+  // todo投稿
+  const addTodos = useCallback(() => {
+    console.log("call");
     const arrayTodos = db.collection("users").doc(userInfo?.uid);
 
     arrayTodos.update({
       todos: kata.FieldValue.arrayUnion(text),
     });
     setText("");
-  };
+  }, [text]);
 
   return (
     <MainLayout>

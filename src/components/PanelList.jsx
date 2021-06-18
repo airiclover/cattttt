@@ -39,5 +39,3 @@ export const PanelList = memo((props) => {
     </div>
   );
 });
-
-PanelList.displayName = "PanelList";

@@ -1,4 +1,4 @@
-import { useGetUserInfo, useCheckLogin } from "src/pages/login";
+import { useGetUserInfo } from "src/pages/login";
 import "tailwindcss/tailwind.css";
 
 const MyApp = ({ Component, pageProps }) => {

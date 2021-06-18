@@ -1,6 +1,6 @@
 import Link from "next/link";
-import { useEffect, useState } from "react";
 import { useRouter } from "next/router";
+import { useState } from "react";
 import { MainLayout } from "src/layouts/MainLayout";
 import { auth } from "src/lib/firebase";
 
@@ -33,20 +33,9 @@ export const useGetUserInfo = () => {
   return { email, setEmail, password, setPassword, userInfo, getUserInfo };
 };
 
-// _appで状態を持たせるためexport
-export const useCheckLogin = () => {
-  const router = useRouter();
-  // 現在ログインしているユーザーだった場合は、自動的にtopPageへ飛ばす
-  // 👇一旦offに
-  // useEffect(() => {
-  //   auth.onAuthStateChanged((user) => user && router.push("/"));
-  // }, []);
-};
-
 export const Login = (props) => {
   const { email, setEmail, password, setPassword, userInfo, getUserInfo } =
     props;
-  console.log(password);
 
   return (
     <MainLayout>
@@ -99,7 +88,7 @@ export const Login = (props) => {
         </button>
 
         <Link href="/signup">
-          <a className="pt-8 border-b border-black">新規登録画面へ &gt;</a>
+          <a className="mt-8 border-b border-black">新規登録画面へ &gt;</a>
         </Link>
       </div>
     </MainLayout>

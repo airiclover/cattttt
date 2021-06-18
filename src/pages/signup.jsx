@@ -1,14 +1,9 @@
 import Link from "next/link";
-import { useRouter } from "next/router";
-import { useEffect, useState } from "react";
 import { MainLayout } from "src/layouts/MainLayout";
 import { db } from "src/lib/firebase";
 import { auth } from "src/lib/firebase";
 
 const SignUp = (props) => {
-  // const [signupEmail, setSignupEmail] = useState("111@create.com");
-  // const [signupPassword, setSignupPassword] = useState("ccc111");
-  const router = useRouter();
   // 👇loginでuser情報を_appでグローバルに状態を持たせてるもの
   const { email, setEmail, password, setPassword, userInfo, getUserInfo } =
     props;
@@ -83,7 +78,7 @@ const SignUp = (props) => {
         </button>
 
         <Link href="/login">
-          <a className="pt-8 border-b border-black">ログイン画面へ &gt;</a>
+          <a className="mt-8 border-b border-black">ログイン画面へ &gt;</a>
         </Link>
       </div>
     </MainLayout>
