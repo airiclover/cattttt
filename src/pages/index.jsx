@@ -55,7 +55,6 @@ const Home = (props) => {
 
   // todo投稿
   const addTodos = useCallback(() => {
-    console.log("call");
     const arrayTodos = db.collection("users").doc(userInfo?.uid);
 
     arrayTodos.update({
