@@ -34,8 +34,7 @@ export const useGetUserInfo = () => {
 };
 
 export const Login = (props) => {
-  const { email, setEmail, password, setPassword, userInfo, getUserInfo } =
-    props;
+  const { email, setEmail, password, setPassword, getUserInfo } = props;
 
   return (
     <MainLayout>
