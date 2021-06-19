@@ -39,10 +39,6 @@ const Home = (props) => {
         getTodos.map((getTodo, index) => ({ id: index, todo: getTodo }))
       );
     });
-
-    return () => {
-      localStorage.removeItem("key");
-    };
   }, []);
 
   // ユーザー情報がなかったら自動的にログイン画面へ
